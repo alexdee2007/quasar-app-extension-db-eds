@@ -197,9 +197,11 @@
       <!-- FOOTER -->
       <q-card-actions align="right">
         <q-btn color="primary" flat label="Скасувати" v-close-popup :disable="file.progressRead" />
-        <q-btn color="primary" label="Підписати" :disable="(!file.isPrivateKeyReaded && !media.isPrivateKeyReaded) || file.progressRead" />
+        <q-btn color="primary" label="Підписати" :disable="(!file.isPrivateKeyReaded && !media.isPrivateKeyReaded) || file.progressRead" @click="signData" />
       </q-card-actions>
-
+      <q-inner-loading :showing="progressSign">
+        <q-spinner-ios size="md" color="primary" />
+      </q-inner-loading>
     </q-card>
   </q-dialog>
 </template>
@@ -254,6 +256,7 @@
         subjCN: null,
         subjOrg: null,
         serial: null,
+        progressSign: false
       }
     },
     static() {
@@ -263,7 +266,10 @@
       }
     },
     props: {
-      doc: String
+      doc: {
+        type: String,
+        default: ''
+      }
     },
     methods: {
       show() {
@@ -357,6 +363,38 @@
         } finally {
           this.media.progressRead = false;
         }
+      },
+      async signData() {
+
+        try {
+
+          this.progressSign = true;
+
+          const fReaded = false;//this.file.isPrivateKeyReaded && await this.$euSignFile.IsPrivateKeyReaded();
+          const mReaded = false;//this.media.isPrivateKeyReaded && await this.$euSignMedia.IsPrivateKeyReaded();
+
+          let signedData;
+
+          if (fReaded) {
+            signedData = await this.$euSignFile.SignDataInternal(true, this.doc, true);
+          } else if (mReaded) {
+            signedData = await this.$euSignMedia.SignDataInternal(true, this.doc, true);
+          } else {
+            await Promise.all([this.clearKeyFile, this.clearKeyMedia]);
+            throw Error('Ключ не зчитано! Будь ласка півторіть зчитування ключа.');
+          }
+
+          this.$q.notify({color: 'positive', timeout: 2500, message: 'Дані успішно підписано', position: 'top', icon: 'done'});
+          this.$emit('ok', signedData);
+          this.hide();
+
+        } catch (err) {
+          console.error(err);
+          this.$q.notify({color: 'negative', timeout: 2500, message: err.message, position: 'top', icon: 'error'});
+        } finally {
+          this.progressSign = false;
+        }
+
       }
     },
     validations: {
