@@ -1,8 +1,8 @@
 export default {
   language: 'uk',
   encoding: 'utf-8',
-  httpProxyServiceURL:'https://develop.api.in.np.gov.ua/v1/eds/proxy',
+  httpProxyServiceURL: process.env.EDS_PROXY_URI,
   directAccess: false,
-  CAs: 'https://develop.api.in.np.gov.ua/v1/eds/proxy/assets/CAs.json',
-  CACertificates: 'https://develop.api.in.np.gov.ua/v1/eds/proxy/assets/CACertificates.p7b'
+  CAs: process.env.EDS_CA_SERVERS_URI,
+  CACertificates: process.env.EDS_CA_CERTIFICATES_URI
 };
