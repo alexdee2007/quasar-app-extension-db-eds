@@ -215,7 +215,13 @@
   import { required } from 'vuelidate/lib/validators';
 
   export default {
-    name: 'EdsForm',
+    name: 'SignForm',
+    props: {
+      doc: {
+        type: [String, Function],
+        default: ''
+      }
+    },
     computed: {
       tab: {
         get() {
@@ -263,12 +269,6 @@
       return {
         initEuSignFile,
         initEuSignMedia
-      }
-    },
-    props: {
-      doc: {
-        type: String,
-        default: ''
       }
     },
     methods: {
@@ -370,19 +370,29 @@
 
           this.progressSign = true;
 
-          const fReaded = false;//this.file.isPrivateKeyReaded && await this.$euSignFile.IsPrivateKeyReaded();
-          const mReaded = false;//this.media.isPrivateKeyReaded && await this.$euSignMedia.IsPrivateKeyReaded();
+          const fileReaded = this.file.isPrivateKeyReaded && await this.$euSignFile.IsPrivateKeyReaded();
+          const mediaReaded = this.media.isPrivateKeyReaded && await this.$euSignMedia.IsPrivateKeyReaded();
 
-          let signedData;
+          let euSign;
 
-          if (fReaded) {
-            signedData = await this.$euSignFile.SignDataInternal(true, this.doc, true);
-          } else if (mReaded) {
-            signedData = await this.$euSignMedia.SignDataInternal(true, this.doc, true);
+          if (fileReaded) {
+            euSign = this.$euSignFile;
+          } else if (mediaReaded) {
+            euSign = this.$euSignMedia;
           } else {
-            await Promise.all([this.clearKeyFile, this.clearKeyMedia]);
-            throw Error('Ключ не зчитано! Будь ласка півторіть зчитування ключа.');
+            await this.clearKeyFile()
+            await this.clearKeyMedia();
+            throw Error('Ключ не було зчитано!');
           }
+
+          let doc = this.doc;
+
+          if (typeof doc === 'function') {
+            const arrayBuffer = await doc();
+            doc = new Uint8Array(arrayBuffer);
+          }
+
+          const signedData = await euSign.SignDataInternal(true, doc, false);
 
           this.$q.notify({color: 'positive', timeout: 2500, message: 'Дані успішно підписано', position: 'top', icon: 'done'});
           this.$emit('ok', signedData);

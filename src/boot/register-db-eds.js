@@ -2,7 +2,7 @@ import store from 'store';
 import edsStore from '../store';
 import {euSignMedia, initEuSignMedia } from '../lib/eu-sign-media';
 import {euSignFile, initEuSignFile } from '../lib/eu-sign-file';
-import EdsForm from '../component/EdsForm.vue';
+import SignForm from '../component/SignForm.vue';
 
 // register store module
 store.registerModule('eds', edsStore);
@@ -18,6 +18,6 @@ export default ({ Vue }) => {
   Vue.prototype.$euSignMedia = euSignMedia;
 
   // globally register component
-  Vue.component('eds-form', EdsForm);
+  Vue.component('sign-form', SignForm);
 
 }
