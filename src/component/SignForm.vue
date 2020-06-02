@@ -394,7 +394,7 @@
 
           const signedData = await euSign.SignDataInternal(true, doc, false);
 
-          this.$q.notify({color: 'positive', timeout: 2500, message: 'Дані успішно підписано', position: 'top', icon: 'done'});
+          this.$q.notify({color: 'positive', timeout: 2500, message: 'Документ успішно підписано', position: 'top', icon: 'done'});
           this.$emit('ok', signedData);
           this.hide();
 
