@@ -26,11 +26,11 @@
           <q-tab-panel name="file">
 
             <!-- ERROR BUNNER -->
-            <q-banner v-if="$store.state.eds.file.error" dense class="bg-red-1 text-black" style="min-height: 120px;">
+            <q-banner v-if="$store.state.eds.file.error" dense class="bg-red-1 text-black" style="min-height: 124px;">
               <template v-slot:avatar>
                 <q-icon name="warning" color="red-4" size="sm" />
               </template>
-              Помилка ініціалізації бібліотеки для роботи з файловими ключами.
+              <div class="row q-pb-sm"><span class="text-bold text-red-6">Помилка ініціалізації бібліотеки для роботи з файловими ключами.</span></div>
               <span v-html="$store.state.eds.file.error" />
               <template v-slot:action>
                 <q-btn dense flat label="Повторити" class="text-red" @click="initEuSignFile" />
@@ -38,7 +38,7 @@
             </q-banner>
 
             <!-- SIGN FORM -->
-            <q-form v-else @submit="readKeyFile" @reset="clearKeyFile" autocomplete="off">
+            <q-form v-else @submit="readKeyFile" @reset="clearKeyFile" autocomplete="off" style="min-height: 124px;">
               <q-file
                 v-model="file.key"
                 label="Особистий ключ (Key-6.dat, *.pfx, *.pk8, *.zs2 або *.jks)"
@@ -103,11 +103,12 @@
           <q-tab-panel name="media">
 
             <!-- ERROR BUNNER -->
-            <q-banner v-if="$store.state.eds.media.error" dense class="bg-red-1 text-black" style="min-height: 120px;">
+            <q-banner v-if="$store.state.eds.media.error" dense class="bg-red-1 text-black" style="min-height: 124px;">
               <template v-slot:avatar>
                 <q-icon name="warning" color="red-4" size="sm" />
               </template>
-              Помилка ініціалізації бібліотеки для роботи з аппаратними носіями.
+              <div class="row q-pb-sm"><span class="text-bold text-red-6">Помилка ініціалізації бібліотеки для роботи з аппаратними носіями.</span></div>
+
               <span v-html="$store.state.eds.media.error" />
               <template v-slot:action>
                 <q-btn dense flat label="Повторити" class="text-red" @click="initEuSignMedia" />
@@ -115,7 +116,7 @@
             </q-banner>
 
             <!-- SIGN FORM -->
-            <q-form v-else @submit="readKeyMedia" @reset="clearKeyMedia" autocomplete="off">
+            <q-form v-else @submit="readKeyMedia" @reset="clearKeyMedia" autocomplete="off" style="min-height: 124px;">
               <db-input
                 v-model="media.key"
                 type="select"
@@ -173,23 +174,24 @@
         </q-tab-panels>
 
         <!-- SIGN BUNNER -->
-        <q-banner v-if="file.isPrivateKeyReaded || media.isPrivateKeyReaded" class="bg-green-1 text-black q-mx-md" style="min-height: 100px;" dense>
+        <q-banner v-if="file.isPrivateKeyReaded || media.isPrivateKeyReaded" class="bg-green-1 text-black q-mx-md" style="min-height: 124px;" dense>
           <template v-slot:avatar>
             <q-icon name="verified_user" color="green-4" size="sm" />
           </template>
-          <div class="row"><span class="text-bold text-green-7">Ключ успішно зчитано з {{ file.isPrivateKeyReaded ? 'файлового': 'апаратного' }} носія.</span></div>
-          <div class="row q-pt-sm">Власник: <span class="text-bold q-pl-xs ellipsis">{{ subjCN }}</span></div>
+          <div class="row q-pb-sm"><span class="text-bold text-green-7">Ключ успішно зчитано з {{ file.isPrivateKeyReaded ? 'файлу': 'апаратного носія' }}.</span></div>
+          <div class="row">Власник: <span class="text-bold q-pl-xs ellipsis">{{ subjCN }}</span></div>
           <div class="row">ЦСК: <span class="text-bold q-pl-xs ellipsis">{{ issuerCN }}</span></div>
           <div class="row">Серійний номер: <span class="text-bold q-pl-xs ellipsis">{{ serial }}</span></div>
           <div class="row">Організація: <span class="text-bold q-pl-xs ellipsis">{{ subjOrg }}</span></div>
         </q-banner>
 
         <!-- DEFAULT BANNER -->
-        <q-banner v-else class="bg-blue-1 text-black q-mx-md" style="min-height: 100px;" dense>
+        <q-banner v-else class="bg-blue-1 text-black q-mx-md" style="min-height: 124px;" dense>
           <template v-slot:avatar>
             <q-icon name="info" color="blue-5" size="sm" />
           </template>
-          Електронний підпис має вигляд окремого файлу або зберігається на захищеному носії. Також, він може бути записаний на ID-картку.
+          <div class="row q-pb-sm"><span class="text-bold text-blue-6">Зчитайте ключ з файлу або апаратного носія.</span></div>
+          Електронний ключ має вигляд окремого файлу або зберігається на захищеному носії. Також, він може бути записаний на ID-картку.
           Система автоматично визначає Акредитований центр сертифікації ключів, яким був виданий сертифікат підпису.
         </q-banner>
 
