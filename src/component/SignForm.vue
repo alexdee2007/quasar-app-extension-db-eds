@@ -177,7 +177,8 @@
           <template v-slot:avatar>
             <q-icon name="verified_user" color="green-4" size="sm" />
           </template>
-          <div class="row">Власник: <span class="text-bold q-pl-xs ellipsis">{{ subjCN }}</span></div>
+          <div class="row"><span class="text-bold text-green-7">Ключ успішно зчитано з {{ file.isPrivateKeyReaded ? 'файлового': 'апаратного' }} носія.</span></div>
+          <div class="row q-pt-sm">Власник: <span class="text-bold q-pl-xs ellipsis">{{ subjCN }}</span></div>
           <div class="row">ЦСК: <span class="text-bold q-pl-xs ellipsis">{{ issuerCN }}</span></div>
           <div class="row">Серійний номер: <span class="text-bold q-pl-xs ellipsis">{{ serial }}</span></div>
           <div class="row">Організація: <span class="text-bold q-pl-xs ellipsis">{{ subjOrg }}</span></div>
