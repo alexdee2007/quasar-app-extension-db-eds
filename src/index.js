@@ -11,10 +11,10 @@ const path = require('path');
 function extendConf (conf) {
   conf.boot.push('~quasar-app-extension-db-eds/src/boot/register-db-eds.js');
   conf.build.transpileDependencies.push(/quasar-app-extension-db-eds[\\/]src[\\/](?!lib[\\/]euscp\.js)/);
-  conf.build.env['EDS_PROXY_URI'] = JSON.stringify(process.env.EDS_PROXY_URI) || JSON.stringify('https://id.court.gov.ua/proxy/authorise/eds/eds_sign');
-  conf.build.env['EDS_CA_SERVERS_URI'] = JSON.stringify(process.env.EDS_CA_SERVERS_URI) || JSON.stringify('http://js.sign.eu.iit.com.ua/Data/CAs.json');
-  conf.build.env['EDS_CA_CERTIFICATES_URI'] = JSON.stringify(process.env.EDS_CA_CERTIFICATES_URI) || JSON.stringify('http://js.sign.eu.iit.com.ua/Data/CACertificates.p7b');
-  conf.build.env['EDS_DIRECT_ACCESS'] = JSON.stringify(process.env.EDS_DIRECT_ACCESS) || JSON.stringify('true');
+  conf.build.env['EDS_PROXY_URI'] = JSON.stringify(process.env.EDS_PROXY_URI);
+  conf.build.env['EDS_CA_SERVERS_URI'] = JSON.stringify(process.env.EDS_CA_SERVERS_URI);
+  conf.build.env['EDS_CA_CERTIFICATES_URI'] = JSON.stringify(process.env.EDS_CA_CERTIFICATES_URI);
+  conf.build.env['EDS_DIRECT_ACCESS'] = JSON.stringify(process.env.EDS_DIRECT_ACCESS);
 }
 
 module.exports = function (api) {
